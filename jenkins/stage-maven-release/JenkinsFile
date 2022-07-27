@@ -24,8 +24,8 @@ pipeline {
             tokenCredentialId: 'jenkins-opensearch-java-generic-webhook-token',
             causeString: 'A tag was cut on opensearch-project/opensearch-java repository causing this workflow to run',
             printContributedVariables: true,
-            printPostContent: false
-            regexpFilterText: '$ref'
+            printPostContent: false,
+            regexpFilterText: '$ref',
             regexpFilterExpression: '^refs/tags/.*'
         )
     }

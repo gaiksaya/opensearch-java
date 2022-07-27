@@ -8,7 +8,7 @@ pipeline {
             docker {
                 label 'Jenkins-Agent-AL2-X64-C54xlarge-Single-Host'
                 image 'opensearchstaging/ci-runner:ci-runner-centos7-opensearch-build-v2'
-                args '-e JAVA_HOME=/opt/java/openjdk-14'
+                args '-e JAVA_HOME=/opt/java/openjdk-11'
                 alwaysPull true
             }
     }
@@ -20,8 +20,9 @@ pipeline {
         GenericTrigger(
             genericVariables: [
                 [key: 'ref', value: '$.ref', regexpFilter: 'refs/tags/'],
+                [key: 'version', value: '$ref', regexpFilter '(\d+\.)?(\d+\.)?(\*|\d+)(-)?([A-Za-z0-9]*)' ],
             ],
-            tokenCredentialId: 'jenkins-opensearch-java-generic-webhook-token',
+            // tokenCredentialId: 'jenkins-opensearch-java-generic-webhook-token',
             causeString: 'A tag was cut on opensearch-project/opensearch-java repository causing this workflow to run',
             printContributedVariables: true,
             printPostContent: false,
@@ -55,7 +56,8 @@ pipeline {
         // }
         stage('Publish to Maven Local') {
             steps {
-                echo $ref
+                echo ref: $ref
+                echo version : $version
                 // checkout the commit
                 checkout([$class: 'GitSCM', userRemoteConfigs: [[url: 'https://github.com/gaiksaya/opensearch-java.git']],
                         branches: [[name: "$ref"]]])
@@ -78,29 +80,29 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Generate checksums') {
-            steps {
-                 dir("$OUTPUT_DIR/org"){
-                    // copy only required artifacts to other folder so that not everything from .m2 gets staged
-                    sh('cp -r /usr/share/opensearch/.m2/repository/org/opensearch $OUTPUT_DIR/org/')
-                    sh('bash -O extglob -c "rm -rf $OUTPUT_DIR/org/opensearch/!(client)"')
-                    sh '''
-                    echo "Creating checksums"
-                    for file in $(find \$OUTPUT_DIR/org/opensearch/client/opensearch-java/ -type f)
-                        do
-                        if [ \${file##*.} != "asc" ]
-                        then
-                            (md5sum \$file | cut -d \' \' -f 1) > \$file.md5
-                            (sha1sum \$file | cut -d \' \' -f 1) > \$file.sha1
-                            (sha256sum \$file | cut -d \' \' -f 1) > \$file.sha256
-                            (sha512sum \$file | cut -d \' \' -f 1) > \$file.sha512
-                        fi
-                        done
-                    '''
-                 }
-                    sh('ls -l \$OUTPUT_DIR/org/opensearch/client/opensearch-java/\${VERSION}')
-            }
-        }
+        // stage('Generate checksums') {
+        //     steps {
+        //          dir("$OUTPUT_DIR/org"){
+        //             // copy only required artifacts to other folder so that not everything from .m2 gets staged
+        //             sh('cp -r /usr/share/opensearch/.m2/repository/org/opensearch $OUTPUT_DIR/org/')
+        //             sh('bash -O extglob -c "rm -rf $OUTPUT_DIR/org/opensearch/!(client)"')
+        //             sh '''
+        //             echo "Creating checksums"
+        //             for file in $(find \$OUTPUT_DIR/org/opensearch/client/opensearch-java/ -type f)
+        //                 do
+        //                 if [ \${file##*.} != "asc" ]
+        //                 then
+        //                     (md5sum \$file | cut -d \' \' -f 1) > \$file.md5
+        //                     (sha1sum \$file | cut -d \' \' -f 1) > \$file.sha1
+        //                     (sha256sum \$file | cut -d \' \' -f 1) > \$file.sha256
+        //                     (sha512sum \$file | cut -d \' \' -f 1) > \$file.sha512
+        //                 fi
+        //                 done
+        //             '''
+        //          }
+        //             sh('ls -l \$OUTPUT_DIR/org/opensearch/client/opensearch-java/\${VERSION}')
+        //     }
+        // }
         // stage('Stage maven artifacts') {
         //     environment {
         //       REPO_URL = "https://aws.oss.sonatype.org/"

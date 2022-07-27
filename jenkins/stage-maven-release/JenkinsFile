@@ -1,6 +1,6 @@
 lib = library(identifier: 'jenkins@20211123', retriever: modernSCM([
     $class: 'GitSCMSource',
-   remote: 'git@github.com:opensearch-project/opensearch-build.git',
+   remote: 'https://github.com/opensearch-project/opensearch-build.git',
 ]))
 
 pipeline {

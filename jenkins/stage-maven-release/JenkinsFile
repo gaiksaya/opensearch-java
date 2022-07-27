@@ -26,7 +26,7 @@ pipeline {
             printContributedVariables: true,
             printPostContent: false
 
-            regexpFilterText: '$ref'
+            regexpFilterText: "$ref"
             regexpFilterExpression: '^refs/tags/.*'
         )
     }

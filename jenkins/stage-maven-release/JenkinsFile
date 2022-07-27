@@ -20,7 +20,7 @@ pipeline {
         GenericTrigger(
             genericVariables: [
                 [key: 'ref', value: '$.ref', regexpFilter: 'refs/tags/'],
-                [key: 'version', value: '$ref', regexpFilter: '(\d+\.)?(\d+\.)?(\*|\d+)(-)?([A-Za-z0-9]*)' ],
+                [key: 'version', value: '$ref', regexpFilter: (\d+\.)?(\d+\.)?(\*|\d+)(-)?([A-Za-z0-9]*) ],
             ],
             // tokenCredentialId: 'jenkins-opensearch-java-generic-webhook-token',
             causeString: 'A tag was cut on opensearch-project/opensearch-java repository causing this workflow to run',

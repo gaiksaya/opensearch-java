@@ -68,17 +68,17 @@ pipeline {
                 // sh('mv /usr/share/opensearch/.m2/repository/org/opensearch/client/opensearch-java/maven-metadata-local.xml /usr/share/opensearch/.m2/repository/org/opensearch/client/opensearch-java/maven-metadata.xml')
             }
         }
-        stage('Sign') {
+        stage('Sign Maven Artifacts') {
             steps {
                 script {
                     signArtifacts(
-                            artifactPath: "${ARTIFACT_PATH}",
-                            type: maven,
+                            artifactPath: "${AARTIFACT_PATHR}",
+                            type: 'maven',
                             platform: 'linux'
                     )
                 }
             }
-        }
+                }
         // stage('Generate checksums') {
         //     steps {
         //          dir("$OUTPUT_DIR/org"){

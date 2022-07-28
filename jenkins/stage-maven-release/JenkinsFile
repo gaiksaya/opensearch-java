@@ -21,7 +21,7 @@ pipeline {
                 [key: 'ref', value: '$.ref'],
                 [key: 'version', value: '$.ref', regexpFilter: 'refs/tags/' ],
             ],
-            token: 'sayali',
+            tokenCredentialId: 'jenkins-opensearch-java-generic-webhook-token',
             causeString: 'A tag was cut on opensearch-project/opensearch-java repository causing this workflow to run',
             printContributedVariables: false,
             printPostContent: false,

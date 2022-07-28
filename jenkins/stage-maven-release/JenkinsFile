@@ -19,13 +19,14 @@ pipeline {
     triggers {
         GenericTrigger(
             genericVariables: [
-                [key: 'ref', value: '$.ref', regexpFilter: '(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)(-)?([A-Za-z0-9]*)'],
+                [key: 'ref', value: '$.ref'],
+                [key: 'version', value: '$ref', regexpFilter: '(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)(-)?([A-Za-z0-9]*)' ],
             ],
             token: 'sayali',
             causeString: 'A tag was cut on opensearch-project/opensearch-java repository causing this workflow to run',
             printContributedVariables: true,
             printPostContent: false,
-            regexpFilterExpression: '^refs/tags/.*'
+            // regexpFilterExpression: '^refs/tags/.*'
         )
     }
     stages {

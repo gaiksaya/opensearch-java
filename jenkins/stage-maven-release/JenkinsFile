@@ -20,7 +20,7 @@ pipeline {
         GenericTrigger(
             genericVariables: [
                 [key: 'ref', value: '$.ref'],
-                [key: 'version', value: '$ref', regexpFilter: 'refs/tags/' ],
+                [key: 'version', value: '$.ref', regexpFilter: 'refs/tags/' ],
             ],
             token: 'sayali',
             causeString: 'A tag was cut on opensearch-project/opensearch-java repository causing this workflow to run',
@@ -57,16 +57,16 @@ pipeline {
         stage('Publish to Maven Local') {
             steps {
                 echo "ref: $ref"
-                echo "version : $version"
+                // echo "version : $version"
                 // checkout the commit
                 checkout([$class: 'GitSCM', userRemoteConfigs: [[url: 'https://github.com/gaiksaya/opensearch-java.git']],
                         branches: [[name: "$ref"]]])
 
-                //publish to maven local
-                sh('./gradlew publishtoMavenLocal')
+                // //publish to maven local
+                // sh('./gradlew publishtoMavenLocal')
 
-                //Rename maven-metadata-local.xml to maven-metadata.xml
-                sh('mv /usr/share/opensearch/.m2/repository/org/opensearch/client/opensearch-java/maven-metadata-local.xml /usr/share/opensearch/.m2/repository/org/opensearch/client/opensearch-java/maven-metadata.xml')
+                // //Rename maven-metadata-local.xml to maven-metadata.xml
+                // sh('mv /usr/share/opensearch/.m2/repository/org/opensearch/client/opensearch-java/maven-metadata-local.xml /usr/share/opensearch/.m2/repository/org/opensearch/client/opensearch-java/maven-metadata.xml')
             }
         }
         stage('Sign') {

@@ -22,7 +22,7 @@ pipeline {
                 [key: 'ref', value: '$.ref'],
                 [key: 'version', value: '$ref', regexpFilter: 'refs/tags/' ],
             ],
-            tokenCredentialId: 'sayali',
+            token: 'sayali',
             causeString: 'A tag was cut on opensearch-project/opensearch-java repository causing this workflow to run',
             printContributedVariables: true,
             printPostContent: false,

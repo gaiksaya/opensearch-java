@@ -108,3 +108,4 @@ tasks.register<Task>(name = "publishForReleaseManager") {
         }
     }
 }
+

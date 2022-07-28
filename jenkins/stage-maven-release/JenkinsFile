@@ -22,7 +22,7 @@ pipeline {
                 [key: 'ref', value: '$.ref', regexpFilter: 'refs/tags/'],
                 [key: 'version', value: '$ref', regexpFilter: '(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)(-)?([A-Za-z0-9]*)' ],
             ],
-            // tokenCredentialId: 'jenkins-opensearch-java-generic-webhook-token',
+            tokenCredentialId: 'sayali',
             causeString: 'A tag was cut on opensearch-project/opensearch-java repository causing this workflow to run',
             printContributedVariables: true,
             printPostContent: false,
@@ -55,8 +55,8 @@ pipeline {
         // }
         stage('Publish to Maven Local') {
             steps {
-                sh "echo ref: ${ref}"
-                sh "echo version : ${version}"
+                echo "ref: $ref"
+                echo "version : $version"
                 // checkout the commit
                 checkout([$class: 'GitSCM', userRemoteConfigs: [[url: 'https://github.com/gaiksaya/opensearch-java.git']],
                         branches: [[name: "$ref"]]])
@@ -68,17 +68,17 @@ pipeline {
                 sh('mv /usr/share/opensearch/.m2/repository/org/opensearch/client/opensearch-java/maven-metadata-local.xml /usr/share/opensearch/.m2/repository/org/opensearch/client/opensearch-java/maven-metadata.xml')
             }
         }
-        // stage('Sign') {
-        //     steps {
-        //         script {
-        //             signArtifacts(
-        //                     artifactPath: "${ARTIFACT_PATH}",
-        //                     type: maven,
-        //                     platform: 'linux'
-        //             )
-        //         }
-        //     }
-        // }
+        stage('Sign') {
+            steps {
+                script {
+                    signArtifacts(
+                            artifactPath: "${ARTIFACT_PATH}",
+                            type: maven,
+                            platform: 'linux'
+                    )
+                }
+            }
+        }
         // stage('Generate checksums') {
         //     steps {
         //          dir("$OUTPUT_DIR/org"){

@@ -72,7 +72,7 @@ pipeline {
             steps {
                 script {
                     signArtifacts(
-                            artifactPath: "${AARTIFACT_PATHR}",
+                            artifactPath: "${ARTIFACT_PATH}",
                             type: 'maven',
                             platform: 'linux'
                     )

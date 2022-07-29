@@ -32,6 +32,8 @@ pipeline {
     stages {
         stage('Publish to Maven Local') {
             steps {
+                echo "ref: $ref"
+                echo "version: $VERSION"
                 // checkout the commit
                 checkout([
                     $class: 'GitSCM', userRemoteConfigs: [[url: 'https://github.com/opensearch-project/opensearch-java.git']],

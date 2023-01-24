@@ -67,8 +67,3 @@ tasks.register<Task>(name = "resolveDependencies") {
         }
     }
 }
-
-tasks.register<Task>("getVersion") {
-    description = "Gets version number from gradle.properties"
-    println(System.getProperty("version"))
-}

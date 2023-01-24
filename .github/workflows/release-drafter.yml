@@ -4,8 +4,7 @@ on:
   push:
     tags:
       - "*"
-env:
-  VERSION : ${GITHUB_REF_NAME#v}
+
 jobs:
   draft-a-release:
     name: Draft a release
@@ -19,7 +18,8 @@ jobs:
           java-version: 11
       - name: Build with Gradle
         run: |
-          echo 'Building with version: $VERSION'
+          export VERSION=$(./gradlew getVersion)
+          echo 'Building the version: $VERSION'
           ./gradlew --no-daemon publishPublishMavenPublicationToLocalRepoRepository && tar -C build -cvf artifacts.tar.gz repository
       - name: Draft a release
         uses: softprops/action-gh-release@v1

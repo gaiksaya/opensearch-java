@@ -4,7 +4,8 @@ on:
   push:
     tags:
       - "*"
-
+env:
+  VERSION : ${GITHUB_REF_NAME#v}
 jobs:
   draft-a-release:
     name: Draft a release

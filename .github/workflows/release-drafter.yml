@@ -19,6 +19,7 @@ jobs:
           java-version: 11
       - name: Build with Gradle
         run: |
+          echo 'Building with version: $VERSION'
           ./gradlew --no-daemon publishPublishMavenPublicationToLocalRepoRepository && tar -C build -cvf artifacts.tar.gz repository
       - name: Draft a release
         uses: softprops/action-gh-release@v1
